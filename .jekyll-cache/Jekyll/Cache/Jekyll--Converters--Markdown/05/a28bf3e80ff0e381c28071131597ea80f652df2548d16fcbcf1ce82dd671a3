@@ -1,0 +1,6 @@
+I"�<p>In this post, I’ll illustrate how to use pystockfish module to analyze a chess game.  This is for anyone who knows a bit of programming and is wondering how to analyze a chess game with those python skills.</p>
+
+<p>What we’ll build: A Python web API that accepts FEN and PGN, processes the game with stockfish, and then returns stockfish’s best move.</p>
+
+<p>Access all the code on my <a href="https://github.com/tlewis11/chess-analysis/tree/master/engine">Github repo</a></p>
+:ET
