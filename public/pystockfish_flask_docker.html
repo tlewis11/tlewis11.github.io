@@ -5,16 +5,18 @@
     <script>hljs.highlightAll();</script>
 </head>
 
-How to analyze a chess position with Stockfish and Python:
+Analyze Chess Games with Stockfish and Python:
 <br/>
 <p>
     This tutorial illustrates how to:
-    <ul><li>analyze a chess position with Stockfish and Python.</li></ul> 
-    <ul><li>use the Pystockfish to read a FEN string and provide a best move.</li></ul>
+        - analyze a chess position with Stockfish and Python. 
+        - use the Pystockfish to read a FEN string and provide a best move
 </p>
-<br/><br/><br/>
+
+<ol>
+<li>install and configure pystockfish.
     <ol>
-        <li>Prequisite: Python is installed and working (preferrably on Linux):</li>
+        <li>Have Python installed and working (preferrably on Linux):</li>
         <pre><code class="language-bash">python --version</code></pre>
         <li> Install stockfish executable:</li>
         <pre>
@@ -38,10 +40,7 @@ deep.setfenposition(fen)
 best_move = deep.bestmove()['move']
 print(best_move)
             </code></pre>
-            <p>Save this code in a script called analyze_chess_game.py and then run it with Python.</p>
-                <pre><code class="language-bash">python analyze_chess_game.py</code></pre>           
-            <img src="pystockfish_example.png" >
     </ol>
 </li>
 
-<a href="https://github.com/tlewis11/chess-analysis/blob/master/engine/Dockerfile">Create a Stockfish engine service with Flask and Docker</a>
+<li><a href="pystockfish_flask_docker.html">Create a Stockfish engine service with Flask and Docker</a></li>
