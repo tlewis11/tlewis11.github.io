@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tim Lewis </title>
+        <title>Clean Blog - Start Bootstrap Theme</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -14,93 +14,51 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
-        <link rel="stylesheet"
-          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-        <script>hljs.highlightAll();</script>
     </head>
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.html">Pragmatic Devops Solutions</a>
+                <a class="navbar-brand" href="index.html">Start Bootstrap</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
-                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="resume.html">Hire Me</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
+        <header class="masthead" style="background-image: url('assets/img/about-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="post-heading">
-                            <h1>How to analyze a chess position with Stockfish and Python</h1>
-                            <span class="meta">
-                                Posted by Tim Lewis
-                                on April 16, 2022
-                            </span>
+                        <div class="page-heading">
+                            <h1>About Me</h1>
+                            <span class="subheading">This is what I do.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <!-- Post Content-->
-        <article class="mb-4">
+        <!-- Main Content-->
+        <main class="mb-4">
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-
-    This tutorial illustrates how to:
-    <ul><li>analyze a chess position with Stockfish and Python.</li></ul> 
-    <ul><li>use the Pystockfish to read a FEN string and provide a best move.</li></ul>
-<br/><br/><br/>
-    <ol>
-        <li>Prequisite: Python is installed and working (preferrably on Linux):</li>
-        <pre><code class="language-bash">python --version</code></pre>
-        <li> Install stockfish executable:</li>
-        <pre>
-        <code class="language-bash">
-#To install on Linux Mint and Ubuntu machines
-apt-get update -y 
-apt-get install -y apt-utils stockfish
-        </code>
-        </pre>
-        <li>Install pystockfish module:</li>
-            <pre><code class="language-bash">pip install pystockfish</code></pre>
-        <li>Use pystockfish to compute the best move from a fen string</li>
-            <pre><code class="language-python">  
-import pystockfish
-#fen string for new game
-fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-
-#create Engine object and compute best move, based on the fen string
-deep = pystockfish.Engine(depth=20)
-deep.setfenposition(fen)
-best_move = deep.bestmove()['move']
-print(best_move)
-            </code></pre>
-            <p>Save this code in a script called analyze_chess_game.py and then run it with Python.</p>
-                <pre><code class="language-bash">python analyze_chess_game.py</code></pre>           
-            <img src="pystockfish_example.png" >
-    </ol>
-</li>
-
-<a href="https://github.com/tlewis11/chess-analysis/blob/master/engine/Dockerfile">Create a Stockfish engine service with Flask and Docker</a>
-
-
-
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur?</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequuntur magnam, excepturi aliquid ex itaque esse est vero natus quae optio aperiam soluta voluptatibus corporis atque iste neque sit tempora!</p>
                     </div>
                 </div>
             </div>
-        </article>
+        </main>
         <!-- Footer-->
         <footer class="border-top">
             <div class="container px-4 px-lg-5">
@@ -143,7 +101,3 @@ print(best_move)
         <script src="js/scripts.js"></script>
     </body>
 </html>
-
-
-
-
