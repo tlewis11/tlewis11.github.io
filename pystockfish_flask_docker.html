@@ -1,158 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Tim Lewis </title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-        <link rel="stylesheet"
-          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-        <script>hljs.highlightAll();</script>
-    </head>
-    <body>
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.html">Pragmatic Devops Solutions</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
-                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="resume.html">Hire Me</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Page Header-->
-        <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
-            <div class="container position-relative px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <div class="post-heading">
-                            <h1>Create a chess engine microservice with Flask and Docker</h1>
-                            <span class="meta">
-                                Posted by Tim Lewis
-                                on April 18, 2022
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- Post Content-->
-        <article class="mb-4">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
+<head>
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
 
+Analyze Chess Games with Stockfish and Python:
+<br/>
+<p>
     This tutorial illustrates how to:
-    <ul><li>Run a Flask microservice in a Docker container</li></ul> 
-    <ul><li>Expose our chess engine service's best move via Flask api</li></ul>
-    <br/>
-    <br/>
-    Larn more about analyzing chess games with Python and Stockfish in <a href="pystockfish_flask_docker.html">this post</a>
-    <br/>
-    All code can be found on my <a href="git@github.com:tlewis11/tlewis11.github.io.git">chess-analysis Github repo</a>
-<br/><br/><br/>
+        - analyze a chess position with Stockfish and Python. 
+        - use the Pystockfish to read a FEN string and provide a best move
+</p>
+
+<ol>
+<li>install and configure pystockfish.
     <ol>
-        <li>Prequisite: Docker installed and working (preferrably on Linux):</li>
-        <pre><code class="language-bash">docker --version</code></pre>
-        <li>Import pgn_analyzer and Flask</li>
-        <pre><code class="language-python">
-from flask import Flask, render_template, request
-from analyzer.pgn_analyzer import suggest_move
-        </code></pre>
-        <li>Create a Flask endpoint</li>
-        <pre><code class="language-python">
-@app.route('/suggest', methods=['post'])
-def suggest():
-    suggested_move = "NOMOVE"
-    return {"move": suggested_move}
-        </code></pre>
-        <li>Pass post variables to Stockfish service's best_move function</li>
-        <pre><code class="language-python">
-def suggest():
-    suggested_move = "NOMOVE"
+        <li>Have Python installed and working (preferrably on Linux):</li>
+        <pre><code class="language-bash">python --version</code></pre>
+        <li> Install stockfish executable:</li>
+        <pre>
+        <code class="language-bash">
+#To install on Linux Mint and Ubuntu machines
+apt-get update -y 
+apt-get install -y apt-utils stockfish
+        </code>
+        </pre>
+        <li>Install pystockfish module:</li>
+            <pre><code class="language-bash">pip install pystockfish</code></pre>
+        <li>Use pystockfish to compute the best move from a fen string</li>
+            <pre><code class="language-python">  
+import pystockfish
+#fen string for new game
+fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
-    if request.form['fen']:
-        print(f'pgn submitted: {request.form["fen"]}')
-        suggested_move = suggest_move(fen=request.form['fen'])
-    elif request.form['pgn']:
-        print(f'pgn submitted: {request.form["pgn"]}')
-        suggested_move = suggest_move(pgn=request.form['pgn'])
-    else:
-        return {"error": "fen or pgn must be supplied to post"}
-    return {"move": suggested_move}
-        </code></pre>
-        <li>Package and run our Flask API in Docker</li>
-        <pre><code class="language-dockerfile">
-FROM python:3
+#create Engine object and compute best move, based on the fen string
+deep = pystockfish.Engine(depth=20)
+deep.setfenposition(fen)
+best_move = deep.bestmove()['move']
+print(best_move)
+            </code></pre>
+    </ol>
+</li>
 
-WORKDIR /usr/src/app
-EXPOSE 5000
-RUN apt-get update -y && apt-get install -y apt-utils stockfish 
-ENV PATH=$PATH:/usr/games
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
-        </code></pre>
-                    </div>
-                </div>
-            </div>
-        </article>
-        <!-- Footer-->
-        <footer class="border-top">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
-                    <div class="col-md-10 col-lg-8 col-xl-7">
-                        <ul class="list-inline text-center">
-                            <li class="list-inline-item">
-                                <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#!">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2022</div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-    </body>
-</html>
+<li><a href="pystockfish_flask_docker.html">Create a Stockfish engine service with Flask and Docker</a></li>
