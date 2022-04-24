@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tim Lewis </title>
+        <title>Opensearch on AWS: Getting Started</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -21,6 +21,7 @@
     </head>
     <body>
         <!-- Navigation-->
+        <!-- this should be imported from a template or class somewhere -->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="index.html">Pragmatic Devops Solutions</a>
@@ -42,10 +43,10 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="post-heading">
-                            <h1>How to analyze a chess position with Stockfish and Python</h1>
+                            <h1>Getting Started with Opensearch on AWS</h1>
                             <span class="meta">
                                 Posted by Tim Lewis
-                                on April 16, 2022
+                                on April 24, 2022
                             </span>
                         </div>
                     </div>
@@ -57,46 +58,75 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
-
-    This tutorial illustrates how to:
-    <ul><li>analyze a chess position with Stockfish and Python.</li></ul> 
-    <ul><li>use the Pystockfish to read a FEN string and provide a best move.</li></ul>
-<br/><br/><br/>
+<p>In this article, we'll do the following:
     <ol>
-        <li>Prequisite: Python is installed and working (preferrably on Linux):</li>
-        <pre><code class="language-bash">python --version</code></pre>
-        <li> Install stockfish executable:</li>
-        <pre>
-        <code class="language-bash">
-#To install on Linux Mint and Ubuntu machines
-apt-get update -y 
-apt-get install -y apt-utils stockfish
-        </code>
-        </pre>
-        <li>Install pystockfish module:</li>
-            <pre><code class="language-bash">pip install pystockfish</code></pre>
-        <li>Use pystockfish to compute the best move from a fen string</li>
-            <pre><code class="language-python">  
-import pystockfish
-#fen string for new game
-fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-
-#create Engine object and compute best move, based on the fen string
-deep = pystockfish.Engine(depth=20)
-deep.setfenposition(fen)
-best_move = deep.bestmove()['move']
-print(best_move)
-            </code></pre>
-            <p>Save this code in a script called analyze_chess_game.py and then run it with Python.</p>
-                <pre><code class="language-bash">python analyze_chess_game.py</code></pre>           
-            <img src="pystockfish_example.png" >
+        <li>Introduce Opensearch</li>
+        <li>Explore options for running Opensearch clusters</li>
+        <li>Deploy a local cluster using docker compose.</li>
     </ol>
-</li>
+</p>
 
-<a href="pystockfish_flask_docker.html">Expose the engine service via Flask api in Docker</a>
+<h1>What is Opensearch?</h1>
+<p>Opensearch is an open-source fork of Elasticsearch. Opensearch is supported and managed by Amazon. 
+    
+    You can use the AWS managed service or run your own Opensearch cluster. Opensearch is designed to be run anywhere - both in on-prem data centers and cloud data centers.</p>
+
+<h1>Run Opensearch Locally</h1>
+Opensearch provides a sample docker-compose file to use for local dev and test environments.  
+
+Let’s run the docker-compose environment:
 <br/>
-<a href="https://github.com/tlewis11/chess-analysis/blob/master/engine/Dockerfile">Create a Stockfish engine service with Flask and Docker</a>
+Save the contents of the <a href="https://opensearch.org/docs/latest/opensearch/install/docker/#sample-docker-compose-file">sample docker-compose file</a> to a file named docker-compose.yml:
+<br/>
 
+Then bring up the docker-compose stack:
+
+<pre><code class="language-bash">docker-compose up</code></pre>
+
+Note: On my first try, I got an error (running on Linux Mint 20.2.  I had to set the vm.max_map_read variable.  If you get this error, run the following command as root.
+
+<pre><code class="language-bash">sysctl -w vm.max_map_count=262144</code></pre>
+
+<p>
+You should now be able to access the Opensearch Dashboard at localhost:5601
+And you can interact with the api on localhost:9200.  
+</p>
+
+<h1>Smoke Testing the Opensearch Installation</h1>
+<p>Run the following commands to verify the cluster is up, running, and usable:</p>
+
+<pre><code class="language-bash">
+#create index
+curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index'
+</code></pre>
+
+
+<pre><code class="language-bash">
+#put data in the index
+curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1' -H 'Content-Type: application/json' -d '{"Description": "To be or not to be, that is the question."}'
+</code></pre>
+
+
+<pre><code class="language-bash">
+#get the data from the index
+curl -XGET --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1'
+</code></pre>
+
+
+See the <a href="https://opensearch.org/docs/latest/#docker-quickstart">Opensearch documentation</a> for further options and exploration.
+<br/>
+
+<h1>What’s the easiest way to run Opensearch in production?</h1>
+	<p>The AWS Opensearch Managed service will certainly be easier to manage in the long run.  With no servers to upgrade, maintain, and secure, using the managed service is definitely the easy route to Opensearch in production.</p> 
+
+    <p>In a future article, I will illustrate how to deploy the service with Terraform.  Spoiler Alert: I'll probably just use this <a href="https://registry.terraform.io/modules/idealo/opensearch/aws/latest">existing Opensearch Terraform module</a>.</p>
+<h1>Why run your own Opensearch rather than using the AWS managed service?</h1>
+    <p>Using the AWS managed service may not work for you or your organiztion if:
+        <ul>
+            <li>You need to create and run custom Opensearch plugins.  This is a limitation of the AWS managed service at present.  There is talk about adding this feature in a future release.  For now, you need to run your own Opensearch to use custom plugins.</li>
+            <li>You need to run Opensearch in a data center or different cloud. </li>
+        </ul>
+    </p> 
                     </div>
                 </div>
             </div>
