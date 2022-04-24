@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Opensearch on AWS: Getting Started</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <link rel="stylesheet"
+          href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <!-- this should be imported from a template or class somewhere -->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="index.html">Pragmatic Devops Solutions</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
+                      <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="resume.html">Hire Me</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading">
+                            <h1>Getting Started with Opensearch on AWS</h1>
+                            <span class="meta">
+                                Posted by Tim Lewis
+                                on April 24, 2022
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+<p>In this article, we'll do the following:
+    <ol>
+        <li>Introduce Opensearch</li>
+        <li>Explore options for running Opensearch clusters</li>
+        <li>Deploy a local cluster using docker compose.</li>
+    </ol>
+</p>
+
+<h1>What is Opensearch?</h1>
+<p>Opensearch is an open-source fork of Elasticsearch. Opensearch is supported and managed by Amazon. 
+    
+    You can use the AWS managed service or run your own Opensearch cluster. Opensearch is designed to be run anywhere - both in on-prem data centers and cloud data centers.</p>
+
+<h1>Run Opensearch Locally</h1>
+Opensearch provides a sample docker-compose file to use for local dev and test environments.  
+
+Let’s run the docker-compose environment:
+<br/>
+Save the contents of the <a href="https://opensearch.org/docs/latest/opensearch/install/docker/#sample-docker-compose-file">sample docker-compose file</a> to a file named docker-compose.yml:
+<br/>
+
+Then bring up the docker-compose stack:
+
+<pre><code class="language-bash">docker-compose up</code></pre>
+
+Note: On my first try, I got an error (running on Linux Mint 20.2.  I had to set the vm.max_map_read variable.  If you get this error, run the following command as root.
+
+<pre><code class="language-bash">sysctl -w vm.max_map_count=262144</code></pre>
+
+<p>
+You should now be able to access the Opensearch Dashboard at localhost:5601
+And you can interact with the api on localhost:9200.  
+</p>
+
+<h1>Smoke Testing the Opensearch Installation</h1>
+<p>Run the following commands to verify the cluster is up, running, and usable:</p>
+
+<pre><code class="language-bash">
+#create index
+curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index'
+</code></pre>
+
+
+<pre><code class="language-bash">
+#put data in the index
+curl -XPUT --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1' -H 'Content-Type: application/json' -d '{"Description": "To be or not to be, that is the question."}'
+</code></pre>
+
+
+<pre><code class="language-bash">
+#get the data from the index
+curl -XGET --insecure -u 'admin:admin' 'https://localhost:9200/my-first-index/_doc/1'
+</code></pre>
+
+
+See the <a href="https://opensearch.org/docs/latest/#docker-quickstart">Opensearch documentation</a> for further options and exploration.
+<br/>
+
+<h1>What’s the easiest way to run Opensearch in production?</h1>
+	<p>The AWS Opensearch Managed service will certainly be easier to manage in the long run.  With no servers to upgrade, maintain, and secure, using the managed service is definitely the easy route to Opensearch in production.</p> 
+
+    <p>In a future article, I will illustrate how to deploy the service with Terraform.  Spoiler Alert: I'll probably just use this <a href="https://registry.terraform.io/modules/idealo/opensearch/aws/latest">existing Opensearch Terraform module</a>.</p>
+<h1>Why run your own Opensearch rather than using the AWS managed service?</h1>
+    <p>Using the AWS managed service may not work for you or your organiztion if:
+        <ul>
+            <li>You need to create and run custom Opensearch plugins.  This is a limitation of the AWS managed service at present.  There is talk about adding this feature in a future release.  For now, you need to run your own Opensearch to use custom plugins.</li>
+            <li>You need to run Opensearch in a data center or different cloud. </li>
+        </ul>
+    </p> 
+                    </div>
+                </div>
+            </div>
+        </article>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2022</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
