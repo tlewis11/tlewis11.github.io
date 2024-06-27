@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tim Lewis </title>
+        <title>Opensearch on AWS: Getting Started</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -21,6 +21,7 @@
     </head>
     <body>
         <!-- Navigation-->
+        <!-- this should be imported from a template or class somewhere -->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="index.html">Pragmatic Devops Solutions</a>
@@ -42,10 +43,10 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="post-heading">
-                            <h1>Create a chess engine microservice with Flask and Docker</h1>
+                            <h1>Deploy Chess Engine Service on Kubernetes</h1>
                             <span class="meta">
                                 Posted by Tim Lewis
-                                on April 18, 2022
+                                on June 22, 2022
                             </span>
                         </div>
                     </div>
@@ -57,62 +58,12 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
+<p>In this article, we'll learn how to package and deploy a custom chess engine service to Kubernetes.  We'll illustrate the following concepts:
+<li>Deploy a custom container as a Kubernetes service</li>
+<li>expose the service and explore the API endpoints</li>
+</p>
 
-    This tutorial illustrates how to:
-    <ul><li>Run a Flask microservice in a Docker container</li></ul> 
-    <ul><li>Expose our chess engine service's best move via Flask api</li></ul>
-    <br/>
-    <br/>
-    Larn more about analyzing chess games with Python and Stockfish in <a href="pystockfish_flask_docker.html">this post</a>
-    <br/>
-    All code can be found on my <a href="git@github.com:tlewis11/tlewis11.github.io.git">chess-analysis Github repo</a>
-<br/><br/><br/>
-        <h1>Prequisite: Docker installed and working (preferrably on Linux):</h1>
-        <pre><code class="language-bash">docker --version</code></pre>
-        <h1>Import pgn_analyzer and Flask</h1>
-        <pre><code class="language-python">
-from flask import Flask, render_template, request
-from analyzer.pgn_analyzer import suggest_move
-        </code></pre>
-        <h1>Create a Flask endpoint</h1>
-        <pre><code class="language-python">
-@app.route('/suggest', methods=['post'])
-def suggest():
-    suggested_move = "NOMOVE"
-    return {"move": suggested_move}
-        </code></pre>
-        <h1>Pass post variables to Stockfish service's best_move function</h1>
-        <pre><code class="language-python">
-def suggest():
-    suggested_move = "NOMOVE"
-
-    if request.form['fen']:
-        print(f'pgn submitted: {request.form["fen"]}')
-        suggested_move = suggest_move(fen=request.form['fen'])
-    elif request.form['pgn']:
-        print(f'pgn submitted: {request.form["pgn"]}')
-        suggested_move = suggest_move(pgn=request.form['pgn'])
-    else:
-        return {"error": "fen or pgn must be supplied to post"}
-    return {"move": suggested_move}
-        </code></pre>
-        <p>At this point,  you should be able to submit a fen string to the engine api by submitting a post request to localhost:5000/suggest. Run the following command to verify:</p>
-     
-         <pre><code class="language-bash">curl -X POST -F fen='rnbqkbnr/pppp1ppp/8/4p3/2P5/8/PP1PPPPP/RNBQKBNR w KQkq e6 0 2' -H 'Content-Type: multipart/form-data' http://localhost:5000/suggest</code></pre>
-
-        <h1>Package and run our Flask API in Docker</h1>
-        <pre><code class="language-dockerfile">
-FROM python:3
-
-WORKDIR /usr/src/app
-EXPOSE 5000
-RUN apt-get update -y && apt-get install -y apt-utils stockfish 
-ENV PATH=$PATH:/usr/games
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
-        </code></pre>
+<h1></h1>
                     </div>
                 </div>
             </div>
@@ -148,7 +99,7 @@ CMD [ "python", "-m" , "flask", "run", "--host=0.0.0.0"]
                                 </a>
                             </li>
                         </ul>
-                        <div class="small text-center text-muted fst-italic">Copyright &copy; tlewis11.github.io 2022</div>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2022</div>
                     </div>
                 </div>
             </div>
